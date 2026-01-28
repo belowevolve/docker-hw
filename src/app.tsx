@@ -5,8 +5,8 @@ import { GithubRepos } from "./components/github-repos";
 export function App() {
   return (
     <ExampleWrapper>
-      <GithubRepos />
       <ComponentExample />
+      <GithubRepos />
     </ExampleWrapper>
   );
 }
