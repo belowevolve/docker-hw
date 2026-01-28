@@ -31,8 +31,7 @@ FROM nginx:stable-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Копируем наш кастомный конфиг Nginx.
-# Он заменяет стандартный default.conf.
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Информируем Docker, что контейнер слушает 80 порт.
 EXPOSE 80

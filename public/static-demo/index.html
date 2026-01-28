@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standard Prefix (Alias)</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+    body {
+      background-color: #f0f8ff;
+    } /* Light blue background override */
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Standard Prefix <span class="badge badge-alias">/static/</span></h1>
+      <p>
+        This page is served from
+        <code>/usr/share/nginx/html/static-demo/index.html</code> via
+        <b>Alias</b>.
+      </p>
+
+      <div class="test-box">
+        <h3>Priority Test: Regex vs Prefix</h3>
+        <p>
+          The image below is requested as <code>/static/image.png</code>.
+        </p>
+        <p>If Nginx works correctly:</p>
+        <ol>
+          <li>
+            Request matches prefix <code>/static/</code>...
+          </li>
+          <li>
+            BUT checks regex <code>~* \.(png|...)</code>...
+          </li>
+          <li><b>Regex wins!</b> Image is served from root (not alias).</li>
+        </ol>
+
+        <!-- The image should be served from /usr/share/nginx/html/static/image.png (Regex) -->
+        <!-- NOT from /usr/share/nginx/html/static-demo/image.png (Alias) -->
+        <div style="text-align: center; margin: 1rem;">
+          <img
+            src="/static/image.png"
+            alt="Test Image"
+            style="max-width: 150px; border: 4px solid #2ecc71; border-radius: 8px;"
+          >
+          <br>
+          <small>React Logo from Root /static/</small>
+        </div>
+      </div>
+
+      <div class="nav">
+        <a href="/">← Back to App</a>
+        <a href="/static/priority/">Priority Prefix (/static/priority/)</a>
+        <a href="/static/exact.html">Exact Match</a>
+      </div>
+    </div>
+  </body>
+</html>

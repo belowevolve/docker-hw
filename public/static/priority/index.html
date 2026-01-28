@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priority Prefix Match</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+    body {
+      background-color: #fff0f5;
+    } /* Light pink background override */
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        Priority Prefix
+        <span class="badge badge-priority">^~ /static/priority/</span>
+      </h1>
+
+      <p>
+        This page is served from
+        <code>/usr/share/nginx/html/static/priority/index.html</code>.
+      </p>
+
+      <div class="test-box">
+        <h3>How it works</h3>
+        <p>
+          Because the location uses <code>^~</code> (caret tilde), it creates a
+          "STOP searching" rule.
+        </p>
+        <p>
+          Once Nginx matches this prefix, it <b>stops</b> looking for Regular
+          Expressions.
+        </p>
+      </div>
+
+      <div class="nav">
+        <a href="/">← Back to App</a>
+        <a href="/static/">Standard Alias (/static/)</a>
+        <a href="/static/exact.html">Exact Match</a>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #333;
+}
+
+.container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.8em;
+  padding: 0.2em 0.6em;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+}
+
+.badge-priority {
+  background-color: #e74c3c;
+} /* Red */
+.badge-alias {
+  background-color: #3498db;
+} /* Blue */
+.badge-regex {
+  background-color: #2ecc71;
+} /* Green */
+.badge-exact {
+  background-color: #f1c40f;
+  color: black;
+} /* Yellow */
+
+.nav {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav a:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+.test-box {
+  border: 2px dashed #ccc;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+code {
+  background: #eee;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: monospace;
+}
