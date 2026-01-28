@@ -7,10 +7,11 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  # Имя образа в нижнем регистре (автоматически)
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,7 +35,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=latest
-            type=sha,format=short
+            type=sha
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -45,29 +46,40 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy:
-    needs: build-and-push
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy via SSH
+      - name: Deploy to Server via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
-            # Login to GHCR (using a Personal Access Token or similar if needed, 
-            # but for simple cases we might just rely on public images or pre-authenticated server)
-            # For simplicity, we assume the image is public or the server is already authenticated.
+            # Приводим имя репозитория к нижнему регистру для Docker
+            REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+            FULL_IMAGE="ghcr.io/$REPO_LOWER:latest"
             
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            
-            # Stop and remove existing container if it exists
+            # Папка проекта на сервере
+            PROJECT_DIR="/home/belowevolve/apps/docker-hw"
+            mkdir -p $PROJECT_DIR
+            cd $PROJECT_DIR
+
+            # Авторизация в GHCR на сервере
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Обновление образа
+            docker pull $FULL_IMAGE
+
+            # Перезапуск контейнера
             docker stop docker-hw-app || true
             docker rm docker-hw-app || true
-            
-            # Run the new container
+
             docker run -d \
               --name docker-hw-app \
               -p 80:80 \
               --restart always \
-              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+              $FULL_IMAGE
+
+            # Очистка мусора (старых образов)
+            docker image prune -f
